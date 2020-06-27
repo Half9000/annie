@@ -28,12 +28,7 @@ func New() types.Extractor {
 
 // Extract is the main function to extract the data.
 func (e *extractor) Extract(url string, option types.Options) ([]*types.Data, error) {
-	html, err := request.Get(url, url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	usernames := utils.MatchOneOf(html, `property="og:title"\s+content="(.+)"`)
+	usernames := utils.MatchOneOf(url, `twitter.com/(.+?)/(status|statuses)`)
 	if usernames == nil || len(usernames) < 2 {
 		return nil, types.ErrURLParseFailed
 	}
